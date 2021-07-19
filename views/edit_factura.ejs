@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/add_empleado.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="index.html" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Modificar Factura</h1>
+        <form action="#">
+            <label for="" class="form-label">ID Factura</label>
+            <input class="form-control" type="text" name="" id="" value="<%= factura.id %>">
+            <label class="form-label" for="">Numero Factura</label>
+            <input class="form-control" type="text" value="<%= factura.nf %>">
+            <label class="form-label" for="">Fecha</label>
+            <input class="form-control" type="date" name="" id="" value="<%= factura.ff %>">
+            <label class="form-label" for="">Monto Facturado</label>
+            <input class="form-control" type="text" name="" id="" value="<%= factura.mf %>">
+            <label class="form-label" for="">Empleado</label>
+            <select class="form-select" name="ide" id="">
+                <option value="-1">Seleccione Empleado</option>
+                <% empleado.forEach((e) => { %>
+                    <% if(factura.ide == e.id) { %>
+                        <option value="<%= e.id %>" selected="true"><%= e.nombres %></option>
+                    <% } else { %>
+                        <option value="<%= e.id %>"><%= e.nombres %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+            <label class="form-label" for="">Cliente</label>
+            <select class="form-select" name="idc" id="">
+                <option value="-1">Seleccione Cliente</option>
+                <% cliente.forEach((cli) => { %>
+                    <% if(factura.idc == cli.id) { %>
+                        <option value="<%= cli.id %>" selected="true"><%= cli.rs %></option>
+                    <% } else { %>
+                        <option value="<%= cli.id %>"><%= cli.rs %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+            <div class="row mt-3 mb-3">
+                <div class="col-6">
+                    <a href="factura.html" class="btn btn-success item-button"><i class="fas fa-paste"></i> Agregar Factura</a>
+                </div>
+                <div class="col-6">
+                    <a href="factura.html" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</html>

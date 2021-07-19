@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/add_empleado.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="/" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Modificar Empleado</h1>
+        <form action="/edit_empleado" method="POST">
+            <label for="" class="form-label">ID</label>
+            <input class="form-control" type="text" name="id" id="" value="<%= empleado.id %>">
+            <label class="form-label" for="">DNI</label>
+            <input class="form-control" type="text" name="dni" value="<%= empleado.dni %>">
+            <label class="form-label" for="">Nombres</label>
+            <input class="form-control" type="text" name="nombres" id="" value="<%= empleado.nombres %>">
+            <label class="form-label" for="">Telefono</label>
+            <input class="form-control" type="text" name="telef" id="" value="<%= empleado.telefono %>">
+            <label class="form-label" for="">Direccion</label>
+            <input class="form-control" type="text" name="direc" id="" value="<%= empleado.direccion %>">
+            <label class="form-label" for="">Salario</label>
+            <input class="form-control" type="text" name="sal" value="<%= empleado.salario %>">
+            <label class="form-label" for="">Email</label>
+            <input class="form-control" type="text" name="email" value="<%= empleado.email %>">
+            <label class="form-label" for="">Rol</label>
+            <select class="form-select" name="idrol" id="">
+                <option value="-1">Seleccione Rool</option>
+                <% roles.forEach((r) => { %>
+                    <% if(r.id == empleado.idrol) { %>
+                        <option value="<%= r.id %>" selected="true"><%= r.rol %></option>
+                    <% } else { %>
+                        <option value="<%= r.id %>"><%= r.rol %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+            <div class="row mt-3 mb-3">
+                <div class="col-6">
+                    <button class="btn btn-success item-button" type="submit"><i class="fas fa-edit"></i> Modificar Empleado</button>
+                </div>
+                <div class="col-6">
+                    <a href="/empleados" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</html>

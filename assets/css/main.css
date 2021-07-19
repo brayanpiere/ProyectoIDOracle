@@ -1,0 +1,23 @@
+.barra-superior{
+    background-color: black;
+    width: 100%;
+    text-align: right;
+}
+
+.salir{
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.titulo{
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+
+.item{
+    display: block;
+    padding: 30px;
+    margin: 10px;
+}

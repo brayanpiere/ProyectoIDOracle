@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/empleados.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="/" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="barra-back">
+            <a href="/main" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
+        </div>
+        <h1>Empleados</h1>
+        <div class="row">
+            <div class="col-6">
+                <a href="/add_empleado" class="btn btn-success"><i class="fas fa-user-plus"></i> Agregar Empleado</a>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-6">
+                        <form action="/search_empleado" method="post">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input class="form-control" type="text" placeholder="Ingrese nombre" name="nombre">
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-6">
+                        <form action="/order_empleado" method="post">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-select" name="tipo_orden" id="">
+                                        <option value="-1">Order por</option>
+                                        <option value="o_nombre">Order por nombre ascendente</option>
+                                        <option value="o_idempleado">Order por id Empleado</option>
+                                        <option value="o_rol">Order por Rol</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-sort-numeric-up"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>DNI</th>
+                        <th>Nombres</th>
+                        <th>Telefono</th>
+                        <th>Direccion</th>
+                        <th>salario</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let c=0 %>
+                        <% empleados.forEach((empleado)=> { %>
+                            <% c++ %>
+                                <tr>
+                                    <td>
+                                        <%= c %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.id %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.dni %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.nombres %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.telefono %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.direccion %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.salario %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.email %>
+                                    </td>
+                                    <td>
+                                        <%= empleado.rol %>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-6 contBotones">
+                                                <a href="/edit_empleado/<%= empleado.id %>"
+                                                    class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
+                                            </div>
+                                            <div class="col-6 contBotones">
+                                                <a href="/delete_empleado/<%= empleado.id %>"
+                                                    class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div>Usuario: <%= usuario.nombre %>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+
+</html>

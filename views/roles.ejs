@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/empleados.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="index.html" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="barra-back">
+            <a href="main.html" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
+        </div>
+        <h1>Roles</h1>
+        <div class="row">
+            <div class="col-6">
+                <a href="/add_rol" class="btn btn-success"><i class="fas fa-user-plus"></i> Agregar Roles</a>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="/search_rol" method="post">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input class="form-control" type="text" placeholder="Ingrese rol" name="rol">
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID Rol</th>
+                        <th>Rol</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let c=0 %>
+                        <% roles.forEach((r)=> { %>
+                            <% c++ %>
+                                <tr>
+                                    <td>
+                                        <%= c %>
+                                    </td>
+                                    <td>
+                                        <%= r.id %>
+                                    </td>
+                                    <td>
+                                        <%= r.rol %>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-6 contBotones">
+                                                <a href="/edit_rol/<%= r.id %>"
+                                                    class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
+                                            </div>
+                                            <div class="col-6 contBotones">
+                                                <a href="/delete_rol/<%= r.id %>"
+                                                    class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+
+</html>
