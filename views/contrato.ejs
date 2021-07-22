@@ -25,19 +25,19 @@
     </div>
     <div class="container">
         <div class="barra-back">
-            <a href="/main" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
+            <a href="factura.html" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
         </div>
-        <h1>Facturas</h1>
+        <h1>Contrato (Factura <%= numf %>)</h1>
         <div class="row">
             <div class="col-6">
-                <a href="/add_factura" class="btn btn-success"><i class="fas fa-copy"></i> Agregar Factura</a>
+                <a href="/add_contrato/<%= idf %>" class="btn btn-success"><i class="fas fa-paste"></i> Agregar Contrato</a>
             </div>
             <div class="col-6">
                 <div class="row">
                     <div class="col-6">
                         <div class="row">
                             <div class="col-9">
-                                <input class="form-control" type="text" placeholder="Ingrese num factura">
+                                <input class="form-control" type="date">
                             </div>
                             <div class="col-3">
                                 <a class="btn btn-success bSearch"><i class="fas fa-search"></i></a>
@@ -47,8 +47,8 @@
                     <div class="col-6">
                         <select class="form-select" name="" id="">
                             <option value="">Order por</option>
-                            <option value="">Order fecha</option>
-                            <option value="">Order por empleado</option>
+                            <option value="">Order por Contratista</option>
+                            <option value="">Order por Transportista</option>
                         </select>
                     </div>
                 </div>
@@ -59,52 +59,53 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>ID Factura</th>
-                        <th>Nun Factura</th>
+                        <th>ID Fact</th>
+                        <th>Contratista</th>
+                        <th>Transportista</th>
+                        <th>Yacimiento</th>
                         <th>Fecha</th>
-                        <th>Monto Facturado</th>
-                        <th>Empleado</th>
-                        <th>Cliente</th>
+                        <th>Toneladas</th>
+                        <th>Estado</th>
                         <th>Accion</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% let c=0 %>
-                        <% facturas.forEach((f)=> { %>
+                        <% contratos.forEach((cont)=> { %>
                             <% c++ %>
                                 <tr>
                                     <td>
                                         <%= c %>
                                     </td>
                                     <td>
-                                        <%= f.id %>
+                                        <%= cont.id %>
                                     </td>
                                     <td>
-                                        <%= f.nf %>
+                                        <%= cont.contr %>
                                     </td>
                                     <td>
-                                        <%= f.ff %>
+                                        <%= cont.t %>
                                     </td>
                                     <td>
-                                        <%= f.mf %>
+                                        <%= cont.y %>
                                     </td>
                                     <td>
-                                        <%= f.ide %>
+                                        <%= cont.fe %>
                                     </td>
                                     <td>
-                                        <%= f.idc %>
+                                        <%= cont.ton %>
+                                    </td>
+                                    <td>
+                                        <%= cont.est %>
                                     </td>
                                     <td>
                                         <div class="row">
-                                            <div class="col-4 contBotones">
-                                                <a href="/contrato/<%= f.nf %>/<%= f.id %>" class="btn btn-dark botones"><i class="fas fa-scroll"></i></a>
-                                            </div>
-                                            <div class="col-4 contBotones">
-                                                <a href="/edit_factura/<%= f.id %>"
+                                            <div class="col-6 contBotones">
+                                                <a href="/edit_contrato/<%= cont.id %>"
                                                     class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
                                             </div>
-                                            <div class="col-4 contBotones">
-                                                <a href="/delete_factura/<%= f.id %>"
+                                            <div class="col-6 contBotones">
+                                                <a href="/delete_contrato/<%= cont.id %>"
                                                     class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
                                             </div>
                                         </div>

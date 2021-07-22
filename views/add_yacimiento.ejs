@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/add_empleado.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="index.html" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Nuevo Yacimiento</h1>
+        <form action="/add_yacimiento" method="POST">
+            <label for="" class="form-label">ID Yacimieto</label>
+            <input class="form-control" type="text" name="id" id="" placeholder="Ingrese un ID Yacimiento. Ejem. YAC0001">
+            <label class="form-label" for="">Nombre Yacimeinto</label>
+            <input class="form-control" type="text" name="nom" placeholder="Ingrese nombre yacimiento. Ejem. Morococha mineral">
+            <label class="form-label" for="">Tipo Mineral</label>
+            <input class="form-control" type="text" name="tm" id="" placeholder="Ingrese tipo de mineral. Ejem. cobre">
+            <label class="form-label" for="">Dueño</label>
+            <input class="form-control" type="text" name="due" id="" placeholder="Ingrese dueño.  Ejem. Paolo Guerrero">
+            <label class="form-label" for="">Capacidad</label>
+            <input class="form-control" type="text" name="capac" id="" placeholder="Ingrese Capacidad. Ejem. 340 personas">
+            <label class="form-label" for="">Telefono</label>
+            <input class="form-control" type="text" name="telef" placeholder="Ingrese Telefono. Ejem. 01-2345667">
+            <label class="form-label" for="">Ubicacion</label>
+            <input class="form-control" type="text" name="ubi" placeholder="Ingrese Ubicacion Ejem. Morococha">
+            <label class="form-label" for="">Referencia</label>
+            <input class="form-control" type="text" name="refe" placeholder="Ingrese Referencia Ejem. KM 349 de la panamericana">
+            <div class="row mt-3 mb-3">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-success item-button"><i class="fas fa-plus-circle"></i> Agregar Yacimiento</button>
+                </div>
+                <div class="col-6">
+                    <a href="yacimiento.html" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</html>

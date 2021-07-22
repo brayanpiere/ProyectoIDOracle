@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/add_empleado.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="index.html" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Nuevo Transportista</h1>
+        <form action="/add_transportista" method="POST">
+            <label for="" class="form-label">ID Transportista</label>
+            <input class="form-control" type="text" name="id" id="" placeholder="Ingrese ID Transportista. Ejem. TRANS00001">
+            <label class="form-label" for="">RUC</label>
+            <input class="form-control" type="text" name="ruc" placeholder="Ingrese RUC. Ejem. 10476165461">
+            <label class="form-label" for="">Razon Social</label>
+            <input class="form-control" type="text" name="rs" id="" placeholder="Ingrese Razon Social. Ejem. PERU TRANSPORT S.A.C.">
+            <label class="form-label" for="">Cantidad de Camiones</label>
+            <input class="form-control" type="text" name="cant" id="" placeholder="Ingrese Cantidad de camiones.  Ejem. 20">
+            <label class="form-label" for="">Telefono</label>
+            <input class="form-control" type="text" name="telef" id="" placeholder="Ingrese Telefono. 982788311">
+            <label class="form-label" for="">Direccion</label>
+            <input class="form-control" type="text" name="direc" placeholder="Ingrese Direccion. Ejem. Calle Hera 304 olimpo ate">
+            <label class="form-label" for="">Email</label>
+            <input class="form-control" type="text" name="email" placeholder="Ingrese Email Ejem. brayanpiere@gmail.com">
+            <div class="row mt-3 mb-3">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-success item-button"><i class="fas fa-user-plus"></i> Agregar Transportista</button>
+                </div>
+                <div class="col-6">
+                    <a href="transportista.html" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</html>

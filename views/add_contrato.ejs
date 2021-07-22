@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/add_empleado.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="barra-superior">
+        <div class="row">
+            <div class="col-6">
+                <h2>EMASA MINERALES S.A.C.</h2>
+            </div>
+            <div class="col-6">
+                <a href="index.html" class="btn btn-success salir">Salir</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Nuevo Contrato</h1>
+        <form action="/add_contrato" method="POST">
+            <input type="text" class="form-control" name="idfac" value="<%= idfac %>">
+            <label for="" class="form-label">Contratista</label>
+            <select class="form-select" name="idcontr" id="">
+                <option value="-1">Seleccione Contratista</option>
+                <% contratistas.forEach((c) => { %>
+                    <option value="<%= c.id %>"><%= c.rs %></option>
+                <% }) %>
+            </select>
+            <label class="form-label" for="">Transportista</label>
+            <select class="form-select" name="idt" id="">
+                <option value="-1">Seleccione Transportista</option>
+                <% transportistas.forEach((t) => { %>
+                    <option value="<%= t.id %>"><%= t.rs %></option>
+                <% }) %>
+            </select>
+            <label class="form-label" for="">Yacimiento</label>
+            <select class="form-select" name="idy" id="">
+                <option value="-1">Seleccione Yacimiento</option>
+                <% yacimientos.forEach((y) => { %>
+                    <option value="<%= y.id %>"><%= y.nom %></option>
+                <% }) %>
+            </select>
+            <label class="form-label" for="">Fecha</label>
+            <input class="form-control" type="date" name="fe" id="">
+            <label class="form-label" for="">Toneladas</label>
+            <input class="form-control" type="text" name="ton" id="" placeholder="Ingrese cant toneladas. Ejem 200 toneladas">
+            <label class="form-label" for="">Estado</label>
+            <input class="form-control" type="text" name="est" placeholder="Ingrese estado de contrato. Ejem. Activo">
+            <div class="row mt-3 mb-3">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-success item-button"><i class="fas fa-paste"></i> Agregar Contrato</button>
+                </div>
+                <div class="col-6">
+                    <a href="/contrato" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</html>

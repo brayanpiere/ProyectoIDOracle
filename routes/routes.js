@@ -509,15 +509,11 @@ router.post('/add_factura', async (req,res)=>{
     let mf=req.body.mf;
     let ide=req.body.ide;
     let idc=req.body.idc;
-    console.log(id);
-    console.log(nf);
+
     console.log(ff);
-    console.log(mf);
-    console.log(ide);
-    console.log(idc);
-    console.log(ff.toLocaleDateString());
+
     
-    sql=`BEGIN insertar_factura(${nf},'${ff.toLocaleDateString()}',${mf},${ide},${idc}); COMMIT;END;`
+    sql=`BEGIN insertar_factura(${nf},'01-01-2020',${mf},${ide},${idc}); COMMIT;END;`
     let result = await BD.open(sql,[],false);
     
     res.redirect('/facturas');
@@ -580,6 +576,458 @@ router.get("/edit_factura/:id", async (req,res)=>{
     })
 })
 
+router.post('/edit_factura', async (req,res)=>{
+    let id=req.body.id;
+    let nf=req.body.nf;
+    let ff=new Date(req.body.ff);
+    let mf=req.body.mf;
+    let ide=req.body.ide;
+    let idc=req.body.idc;
+    console.log(id);
+    console.log(nf);
+    console.log(ff);
+    console.log(mf);
+    console.log(ide);
+    console.log(idc);
+
+    sql=`BEGIN modifica_factura(${id},${nf},'01-02-2020',${mf},${ide},${idc}); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/facturas');
+})
+
+router.get('/delete_factura/:id', async (req,res)=>{
+    const id = req.params.id;
+    sql=`BEGIN elimina_factura(${id}); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/facturas');
+})
+
+//---------ROUTER CONTRATISTA-----------------//
+//==========================================//
+
+router.get('/contratista', async (req,res)=>{
+    const listaContratistas =[];
+    sql='select * from contratista';
+
+    let result = await BD.open(sql,[],false);
+    result.rows.map(c=>{
+        let contSchema = {
+            'id': c[0],
+            'ruc': c[1],
+            'rs': c[2],
+            'ce': c[3],
+            'telef': c[4],
+            'direc': c[5],
+            'email': c[6],
+        }
+        listaContratistas.push(contSchema)
+    });
+
+    res.render('contratista',{
+        
+        contratistas : listaContratistas,
+        usuario : req.session.usuario
+    })
+})
+
+router.get('/add_contratista',(req,res)=>{
+    res.render('add_contratista');
+})
+
+router.post('/add_contratista', async (req,res)=>{
+    let ruc=req.body.ruc;
+    let rs=req.body.rs;
+    let ce=parseInt(req.body.ce);
+    let telef=req.body.telef;
+    let direc=req.body.direc;
+    let email=req.body.email;
+
+    sql=`BEGIN insertar_contratista(${ruc},'${rs}',${ce},'${telef}','${direc}','${email}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/contratista');
+})
+
+router.get("/edit_contratista/:id", async (req,res)=>{
+    let id = req.params.id;
+    console.log(id);
+    let listaContratistas;
+    sql=`select * from contratista where idcontratista=${id}`;
+    let result = await BD.open(sql,[],false);
+    console.log(result);
+    result.rows.map(cont=>{
+        let contSchema = {
+            'id': cont[0],
+            'ruc':cont[1],
+            'rs':cont[2],
+            'ce':cont[3],
+            'telef':cont[4],
+            'direc':cont[5],
+            'email':cont[6]
+        }
+        listaContratistas =contSchema
+    });
+    res.render("edit_contratista",{
+        contratista : listaContratistas,
+    })
+})
+
+router.post('/edit_contratista', async (req,res)=>{
+    let id=parseInt(req.body.id);
+    let ruc=parseInt(req.body.ruc);
+    let rs=req.body.rs;
+    let ce=parseInt(req.body.ce);
+    let telef=req.body.telef;
+    let direc=req.body.direc;
+    let email=req.body.email;
+    sql=`BEGIN modifica_contratista(${id},${ruc},'${rs}',${ce},'${telef}','${direc}','${email}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/contratista');
+})
+
+router.get('/delete_contratista/:id', async (req,res)=>{
+    const id = req.params.id;
+    sql=`BEGIN elimina_contratista(${id}); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/contratista');
+})
+
+
+//---------ROUTER YACIMIENTO-----------------//
+//==========================================//
+
+
+router.get('/yacimiento', async (req,res)=>{
+    const listaYacimientos =[];
+    sql='select * from yacimiento';
+
+    let result = await BD.open(sql,[],false);
+    result.rows.map(y=>{
+        let yaciSchema = {
+            'id': y[0],
+            'nom': y[1],
+            'tm': y[2],
+            'due': y[3],
+            'capac': y[4],
+            'telef': y[5],
+            'ubi': y[6],
+            'refe': y[7],
+        }
+        listaYacimientos.push(yaciSchema)
+    });
+
+    res.render('yacimiento',{
+        
+        yacimientos : listaYacimientos,
+        usuario : req.session.usuario
+    })
+})
+
+router.get('/add_yacimiento',(req,res)=>{
+    res.render('add_yacimiento');
+})
+
+router.post('/add_yacimiento', async (req,res)=>{
+    let nom=req.body.nom;
+    let tm=req.body.tm;
+    let due=req.body.due;
+    let capac=parseInt(req.body.capac);
+    let telef=req.body.telef;
+    let ubi=req.body.ubi;
+    let refe=req.body.refe;
+
+    sql=`BEGIN insertar_yacimiento('${nom}','${tm}','${due}',${capac},'${telef}','${ubi}','${refe}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/yacimiento');
+})
+
+router.get("/edit_yacimiento/:id", async (req,res)=>{
+    let id = req.params.id;
+    console.log(id);
+    let listaYacimiento;
+    sql=`select * from yacimiento y where y.idyacimiento=${id}`;
+    let result = await BD.open(sql,[],false);
+    console.log(result);
+    result.rows.map(y=>{
+        let yaciSchema = {
+            'id': y[0],
+            'nom': y[1],
+            'tm': y[2],
+            'due': y[3],
+            'capac': y[4],
+            'telef': y[5],
+            'ubi': y[6],
+            'refe': y[7],
+        }
+        listaYacimiento =yaciSchema
+    });
+    res.render("edit_yacimiento",{
+        yacimiento : listaYacimiento,
+    })
+})
+
+router.post('/edit_yacimiento', async (req,res)=>{
+    let id=req.body.id;
+    let nom=req.body.nom;
+    let tm=req.body.tm;
+    let due=req.body.due;
+    let capac=parseInt(req.body.capac);
+    let telef=req.body.telef;
+    let ubi=req.body.ubi;
+    let refe=req.body.refe;
+    sql=`BEGIN modifica_yacimiento(${id},'${nom}','${tm}','${due}',${capac},'${telef}','${ubi}','${refe}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/yacimiento');
+})
+
+router.get('/delete_yacimiento/:id', async (req,res)=>{
+    const id = req.params.id;
+    sql=`BEGIN elimina_yacimiento(${id}); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/yacimiento');
+})
+
+
+
+//---------ROUTER TRANSPORTISTA-----------------//
+//==========================================//
+
+
+router.get('/transportista', async (req,res)=>{
+    const listaTransportistas =[];
+    sql='select * from transportista';
+
+    let result = await BD.open(sql,[],false);
+    result.rows.map(t=>{
+        let transSchema = {
+            'id': t[0],
+            'ruc': t[1],
+            'rs': t[2],
+            'cant': t[3],
+            'telef': t[4],
+            'direc': t[5],
+            'email': t[6],
+        }
+        listaTransportistas.push(transSchema)
+    });
+
+    res.render('transportista',{
+        
+        transportistas : listaTransportistas,
+        usuario : req.session.usuario
+    })
+})
+
+router.get('/add_transportista',(req,res)=>{
+    res.render('add_transportista');
+})
+
+router.post('/add_transportista', async (req,res)=>{
+    let id=req.body.id;
+    let ruc=req.body.ruc;
+    let rs=req.body.rs;
+    let cant=parseInt(req.body.cant);
+    let telef=req.body.telef;
+    let direc=req.body.direc;
+    let email=req.body.email;
+
+    sql=`BEGIN insertar_transportista(${ruc},'${rs}',${cant},'${telef}','${direc}','${email}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/transportista');
+})
+
+router.get("/edit_transportista/:id", async (req,res)=>{
+    let id = req.params.id;
+    console.log(id);
+    let listaTransportista;
+    sql=`select * from transportista t where t.idtransportista=${id}`;
+    let result = await BD.open(sql,[],false);
+    console.log(result);
+    result.rows.map(t=>{
+        let transSchema = {
+            'id': t[0],
+            'ruc': t[1],
+            'rs': t[2],
+            'cant': t[3],
+            'telef': t[4],
+            'direc': t[5],
+            'email': t[6],
+        }
+        listaTransportista =transSchema
+    });
+    res.render("edit_transportista",{
+        transportista : listaTransportista,
+    })
+})
+
+router.post('/edit_transportista', async (req,res)=>{
+    let id=req.body.id;
+    let ruc=req.body.ruc;
+    let rs=req.body.rs;
+    let cant=parseInt(req.body.cant);
+    let telef=req.body.telef;
+    let direc=req.body.direc;
+    let email=req.body.email;
+
+    sql=`BEGIN modifica_transportista(${id},${ruc},'${rs}',${cant},'${telef}','${direc}','${email}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/transportista');
+})
+
+router.get('/delete_transportista/:id', async (req,res)=>{
+    const id = req.params.id;
+    sql=`BEGIN elimina_transportista(${id}); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/transportista');
+})
+
+//---------ROUTER CONTRATO-----------------//
+//==========================================//
+
+router.get('/contrato/:nf/:id', async (req,res)=>{
+    const nf = req.params.nf;
+    const idf = req.params.id;
+    const listaContratos =[];
+    sql=`select c.idfactura, contr.razonsocial, t.razonsocial, y.nombre, c.fecha, c.toneladas, c.estado from contrato c, contratista contr, transportista t, yacimiento y where c.idfactura=${idf} and c.idcontratista=contr.idcontratista and c.idtransportista=t.idtransportista and c.idyacimiento=y.idyacimiento`;
+
+    let result = await BD.open(sql,[],false);
+    result.rows.map(c=>{
+        let contSchema = {
+            'id': c[0],
+            'contr': c[1],
+            't': c[2],
+            'y': c[3],
+            'fe': c[4],
+            'ton': c[5],
+            'est': c[6],
+        }
+        listaContratos.push(contSchema)
+    });
+
+    res.render('contrato',{
+        numf:nf,
+        idf:idf,
+        contratos : listaContratos,
+        usuario : req.session.usuario
+    })
+})
+
+router.get('/add_contrato/:idf', async (req,res)=>{
+    let idf = req.params.idf;
+    console.log(idf);
+    const listaContratista =[];
+    sql='select c.idcontratista, c.razonsocial from contratista c';
+    let result = await BD.open(sql,[],false);
+    result.rows.map(cont=>{
+        let contSchema = {
+            'id': cont[0],
+            'rs':cont[1]
+        }
+        listaContratista.push(contSchema)
+    });
+
+    const listaTransportista =[];
+    sql2='select t.idtransportista, t.razonsocial from transportista t';
+    let result2 = await BD.open(sql2,[],false);
+    result2.rows.map(t=>{
+        let tSchema = {
+            'id': t[0],
+            'rs':t[1]
+        }
+        listaTransportista.push(tSchema)
+    });
+
+    const listaYacimiento =[];
+    sql3='select y.idyacimiento, y.nombre from yacimiento y';
+    let result3 = await BD.open(sql3,[],false);
+    result3.rows.map(y=>{
+        let ySchema = {
+            'id': y[0],
+            'nom':y[1]
+        }
+        listaYacimiento.push(ySchema)
+    });
+
+    res.render('add_contrato',{
+        idfac:idf,
+        contratistas : listaContratista,
+        transportistas : listaTransportista,
+        yacimientos : listaYacimiento
+    })
+})
+
+router.post('/add_contrato', async (req,res)=>{
+    let idf=parseInt(req.body.idfac);
+    let idcontr=parseInt(req.body.idcontr);
+    let idt=parseInt(req.body.idt);
+    let idy=parseInt(req.body.idy);
+    let fe=req.body.fe;
+    let ton=parseFloat(req.body.ton);
+    let est=req.body.est;
+    console.log(idf);
+    
+    sql=`BEGIN insertar_contrato(${idf},${idcontr},${idt},${idy},'01-01-2021',${ton},'${est}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/facturas');
+    
+})
+
+router.get("/edit_contratista/:id", async (req,res)=>{
+    let id = req.params.id;
+    console.log(id);
+    let listaContratistas;
+    sql=`select * from contratista where idcontratista=${id}`;
+    let result = await BD.open(sql,[],false);
+    console.log(result);
+    result.rows.map(cont=>{
+        let contSchema = {
+            'id': cont[0],
+            'ruc':cont[1],
+            'rs':cont[2],
+            'ce':cont[3],
+            'telef':cont[4],
+            'direc':cont[5],
+            'email':cont[6]
+        }
+        listaContratistas =contSchema
+    });
+    res.render("edit_contratista",{
+        contratista : listaContratistas,
+    })
+})
+
+router.post('/edit_contratista', async (req,res)=>{
+    let id=parseInt(req.body.id);
+    let ruc=parseInt(req.body.ruc);
+    let rs=req.body.rs;
+    let ce=parseInt(req.body.ce);
+    let telef=req.body.telef;
+    let direc=req.body.direc;
+    let email=req.body.email;
+    sql=`BEGIN modifica_contratista(${id},${ruc},'${rs}',${ce},'${telef}','${direc}','${email}'); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/contratista');
+})
+
+router.get('/delete_contrato/:id', async (req,res)=>{
+    const id = req.params.id;
+    sql=`BEGIN elimina_contrato(${id}); COMMIT;END;`
+    let result = await BD.open(sql,[],false);
+    console.log(result.rows);
+    res.redirect('/facturas');
+})
 
 /*------------------------------------------------------*/
 /*------------------------------------------------------*/

@@ -23,15 +23,15 @@
     </div>
     <div class="container">
         <h1>Modificar Factura</h1>
-        <form action="#">
+        <form action="/edit_factura" method="POST">
             <label for="" class="form-label">ID Factura</label>
-            <input class="form-control" type="text" name="" id="" value="<%= factura.id %>">
+            <input class="form-control" type="text" name="id" id="" value="<%= factura.id %>">
             <label class="form-label" for="">Numero Factura</label>
-            <input class="form-control" type="text" value="<%= factura.nf %>">
+            <input class="form-control" type="text" name="nf" value="<%= factura.nf %>">
             <label class="form-label" for="">Fecha</label>
-            <input class="form-control" type="date" name="" id="" value="<%= factura.ff %>">
+            <input class="form-control" type="date" name="ff" id="" value="<%= factura.ff %>">
             <label class="form-label" for="">Monto Facturado</label>
-            <input class="form-control" type="text" name="" id="" value="<%= factura.mf %>">
+            <input class="form-control" type="text" name="mf" id="" value="<%= factura.mf %>">
             <label class="form-label" for="">Empleado</label>
             <select class="form-select" name="ide" id="">
                 <option value="-1">Seleccione Empleado</option>
@@ -56,7 +56,7 @@
             </select>
             <div class="row mt-3 mb-3">
                 <div class="col-6">
-                    <a href="factura.html" class="btn btn-success item-button"><i class="fas fa-paste"></i> Agregar Factura</a>
+                    <button type="submit" class="btn btn-success item-button"><i class="fas fa-paste"></i> Modificar Factura</button>
                 </div>
                 <div class="col-6">
                     <a href="factura.html" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>

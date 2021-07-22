@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/591c2421c1.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/css/empleados.css">
+    <link rel="stylesheet" href="css/empleados.css">
     <title>Document</title>
 </head>
 
@@ -25,31 +25,42 @@
     </div>
     <div class="container">
         <div class="barra-back">
-            <a href="/main" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
+            <a href="main.html" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
         </div>
-        <h1>Facturas</h1>
+        <h1>Yacimientos</h1>
         <div class="row">
             <div class="col-6">
-                <a href="/add_factura" class="btn btn-success"><i class="fas fa-copy"></i> Agregar Factura</a>
+                <a href="/add_yacimiento" class="btn btn-success"><i class="fas fa-plus-circle"></i> Agregar Yacimiento</a>
             </div>
             <div class="col-6">
                 <div class="row">
                     <div class="col-6">
-                        <div class="row">
-                            <div class="col-9">
-                                <input class="form-control" type="text" placeholder="Ingrese num factura">
+                        <form action="/search_cliente" method="post">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input class="form-control" type="text" placeholder="Ingrese Razon Social" name="rs">
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-search"></i></button>
+                                </div>
                             </div>
-                            <div class="col-3">
-                                <a class="btn btn-success bSearch"><i class="fas fa-search"></i></a>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="col-6">
-                        <select class="form-select" name="" id="">
-                            <option value="">Order por</option>
-                            <option value="">Order fecha</option>
-                            <option value="">Order por empleado</option>
-                        </select>
+                        <form action="/order_cliente" method="post">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-select" name="tipo_orden" id="">
+                                        <option value="-1">Order por</option>
+                                        <option value="o_rs">Order por Razon Social</option>
+                                        <option value="o_id">Order por ID</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-sort-numeric-up"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -59,52 +70,57 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>ID Factura</th>
-                        <th>Nun Factura</th>
-                        <th>Fecha</th>
-                        <th>Monto Facturado</th>
-                        <th>Empleado</th>
-                        <th>Cliente</th>
+                        <th>ID Yacimiento</th>
+                        <th>Nombre</th>
+                        <th>Tipo Mineral</th>
+                        <th>Dueño</th>
+                        <th>Capacidad</th>
+                        <th>Telefono</th>
+                        <th>Ubicacion</th>
+                        <th>Referencia</th>
                         <th>Accion</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% let c=0 %>
-                        <% facturas.forEach((f)=> { %>
+                        <% yacimientos.forEach((y)=> { %>
                             <% c++ %>
                                 <tr>
                                     <td>
                                         <%= c %>
                                     </td>
                                     <td>
-                                        <%= f.id %>
+                                        <%= y.id %>
                                     </td>
                                     <td>
-                                        <%= f.nf %>
+                                        <%= y.nom %>
                                     </td>
                                     <td>
-                                        <%= f.ff %>
+                                        <%= y.tm %>
                                     </td>
                                     <td>
-                                        <%= f.mf %>
+                                        <%= y.due %>
                                     </td>
                                     <td>
-                                        <%= f.ide %>
+                                        <%= y.capac %>
                                     </td>
                                     <td>
-                                        <%= f.idc %>
+                                        <%= y.telef %>
+                                    </td>
+                                    <td>
+                                        <%= y.ubi %>
+                                    </td>
+                                    <td>
+                                        <%= y.refe %>
                                     </td>
                                     <td>
                                         <div class="row">
-                                            <div class="col-4 contBotones">
-                                                <a href="/contrato/<%= f.nf %>/<%= f.id %>" class="btn btn-dark botones"><i class="fas fa-scroll"></i></a>
-                                            </div>
-                                            <div class="col-4 contBotones">
-                                                <a href="/edit_factura/<%= f.id %>"
+                                            <div class="col-6 contBotones">
+                                                <a href="/edit_yacimiento/<%= y.id %>"
                                                     class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
                                             </div>
-                                            <div class="col-4 contBotones">
-                                                <a href="/delete_factura/<%= f.id %>"
+                                            <div class="col-6 contBotones">
+                                                <a href="/delete_yacimiento/<%= y.id %>"
                                                     class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
                                             </div>
                                         </div>
