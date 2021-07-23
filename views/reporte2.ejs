@@ -25,44 +25,60 @@
     </div>
     <div class="container">
         <div class="barra-back">
-            <a href="/main" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
+            <a href="/reportes" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
         </div>
-        <h1>Facturas</h1>
+        <h1>Reporte de Monto Facturados</h1>
         <div class="row">
-            <div class="col-6">
-                <a href="/add_factura" class="btn btn-success"><i class="fas fa-copy"></i> Agregar Factura</a>
-            </div>
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-6">
-                        <form action="/search_factura" method="post">
+            <div class="col-12">
+                <form action="/reporte2" method="post">
+                    <div class="row">
+                        <div class="col-2">
                             <div class="row">
-                                <div class="col-9">
-                                    <input class="form-control" type="text" placeholder="Ingrese nN° Fact" name="numf">
-                                </div>
                                 <div class="col-3">
-                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-search"></i></button>
+                                    <label class="form-label" for="">Fecha Inicio</label>
+                                </div>
+                                <div class="col-9">
+                                    <input class="form-control" type="date" name="fi" id="">
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col-6">
-                        <form action="/order_factura" method="post">
+                        </div>
+                        <div class="col-2">
                             <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label" for="">Fecha Fin</label>
+                                </div>
                                 <div class="col-9">
-                                    <select class="form-select" name="tipo_orden" id="">
-                                        <option value="-1">Order por</option>
-                                        <option value="o_fasc">Order por fecha asc</option>
-                                        <option value="o_fdesc">Order fecha desc</option>
+                                    <input class="form-control" type="date" name="ff" id="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="form-label" for="">Cliente</label>
+                                </div>
+                                <div class="col-8">
+                                    <select class="form-select" name="idc" id="">
+                                        <option value="-1">Seleccione Cliente</option>
+                                        <% cliente.forEach((cli) => { %>
+                                            <% if(factura.idc == cli.id) { %>
+                                                <option value="<%= cli.id %>" selected="true"><%= cli.rs %></option>
+                                            <% } else { %>
+                                                <option value="<%= cli.id %>"><%= cli.rs %></option>
+                                            <% } %>
+                                        <% }) %>
                                     </select>
                                 </div>
-                                <div class="col-3">
-                                    <button class="btn btn-success bSearch" type="submit"><i class="fas fa-sort-numeric-up"></i></button>
-                                </div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-success item-button" type="submit">Go</button>
+                        </div>
+                        <div class="col-3">
+                            <label class="form-label" for="">Monto Facturado <%= montofact %> </label>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div>
@@ -76,12 +92,11 @@
                         <th>Monto Facturado</th>
                         <th>Empleado</th>
                         <th>Cliente</th>
-                        <th>Accion</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% let c=0 %>
-                        <% facturas.forEach((f)=> { %>
+                        <% factura.forEach((f)=> { %>
                             <% c++ %>
                                 <tr>
                                     <td>
@@ -104,21 +119,6 @@
                                     </td>
                                     <td>
                                         <%= f.idc %>
-                                    </td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-4 contBotones">
-                                                <a href="/contrato/<%= f.nf %>/<%= f.id %>" class="btn btn-dark botones"><i class="fas fa-scroll"></i></a>
-                                            </div>
-                                            <div class="col-4 contBotones">
-                                                <a href="/edit_factura/<%= f.id %>"
-                                                    class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
-                                            </div>
-                                            <div class="col-4 contBotones">
-                                                <a href="/delete_factura/<%= f.id %>"
-                                                    class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                                 <% }) %>

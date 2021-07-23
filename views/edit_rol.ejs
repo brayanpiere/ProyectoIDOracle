@@ -17,7 +17,7 @@
                 <h2>EMASA MINERALES S.A.C.</h2>
             </div>
             <div class="col-6">
-                <a href="index.html" class="btn btn-success salir">Salir</a>
+                <a href="/" class="btn btn-success salir">Salir</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,8 @@
         <h1>Modificar Rol</h1>
         <form action="/edit_rol" method="POST">
             <label for="" class="form-label">ID Rol</label>
-            <input class="form-control" type="text" name="id" id="" value="<%= rol.id %>">
+            <input hidden class="form-control" type="text" name="id" id="" value="<%= rol.id %>">
+            <label class="form-control" for=""><%= rol.id %></label>
             <label class="form-label" for="">Rol</label>
             <input class="form-control" type="text" name="rol" value="<%= rol.rol %>">
             <div class="row mt-3 mb-3">

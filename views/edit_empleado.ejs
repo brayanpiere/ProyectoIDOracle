@@ -25,7 +25,8 @@
         <h1>Modificar Empleado</h1>
         <form action="/edit_empleado" method="POST">
             <label for="" class="form-label">ID</label>
-            <input class="form-control" type="text" name="id" id="" value="<%= empleado.id %>">
+            <input hidden class="form-control" type="text" name="id" id="" value="<%= empleado.id %>">
+            <label class="form-control" for=""><%= empleado.id %></label>
             <label class="form-label" for="">DNI</label>
             <input class="form-control" type="text" name="dni" value="<%= empleado.dni %>">
             <label class="form-label" for="">Nombres</label>

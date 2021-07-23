@@ -19,13 +19,13 @@
                 <h2>EMASA MINERALES S.A.C.</h2>
             </div>
             <div class="col-6">
-                <a href="index.html" class="btn btn-success salir">Salir</a>
+                <a href="/" class="btn btn-success salir">Salir</a>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="barra-back">
-            <a href="main.html" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
+            <a href="/main" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i></a>
         </div>
         <h1>Roles</h1>
         <div class="row">
@@ -49,46 +49,49 @@
                 </div>
             </div>
         </div>
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>ID Rol</th>
-                        <th>Rol</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% let c=0 %>
-                        <% roles.forEach((r)=> { %>
-                            <% c++ %>
-                                <tr>
-                                    <td>
-                                        <%= c %>
-                                    </td>
-                                    <td>
-                                        <%= r.id %>
-                                    </td>
-                                    <td>
-                                        <%= r.rol %>
-                                    </td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-6 contBotones">
-                                                <a href="/edit_rol/<%= r.id %>"
-                                                    class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
+        <div class="troles">
+            <div class="ttroles">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ID Rol</th>
+                            <th>Rol</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let c=0 %>
+                            <% roles.forEach((r)=> { %>
+                                <% c++ %>
+                                    <tr>
+                                        <td>
+                                            <%= c %>
+                                        </td>
+                                        <td>
+                                            <%= r.id %>
+                                        </td>
+                                        <td>
+                                            <%= r.rol %>
+                                        </td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-6 contBotones">
+                                                    <a href="/edit_rol/<%= r.id %>"
+                                                        class="btn btn-primary botones"><i class="fas fa-edit"></i></a>
+                                                </div>
+                                                <div class="col-6 contBotones">
+                                                    <a href="/delete_rol/<%= r.id %>"
+                                                        class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
+                                                </div>
                                             </div>
-                                            <div class="col-6 contBotones">
-                                                <a href="/delete_rol/<%= r.id %>"
-                                                    class="btn btn-danger botones"><i class="fas fa-trash-alt"></i></a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <% }) %>
-                </tbody>
-            </table>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
 </body>

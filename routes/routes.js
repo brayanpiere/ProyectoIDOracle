@@ -28,7 +28,7 @@ router.get('/main',(req,res)=>{
 
 router.get('/empleados', async (req,res)=>{
     const listaEmpleados =[];
-    sql='select e.idempleado, e.dni, e.nombres, e.telefono, e.direccion, e.salario, e.email, r.rol from empleado e, rol r where e.idrol=r.idrol';
+    sql='select e.idempleado, e.dni, e.nombres, e.telefono, e.direccion, e.salario, e.email, r.rol from empleado e, rol r where e.idrol=r.idrol order by e.idempleado desc';
 
     let result = await BD.open(sql,[],false);
     result.rows.map(emp=>{
@@ -149,7 +149,7 @@ router.post('/search_empleado', async (req,res)=>{
     let nombre=req.body.nombre;
     console.log(nombre);
     const listaEmpleados =[];
-    sql=`select * from empleado e where e.nombres like '%${nombre}%'`;
+    sql=`select e.idempleado, e.dni, e.nombres, e.telefono, e.direccion, e.salario, e.email, r.rol from empleado e, rol r where e.idrol=r.idrol and upper(e.nombres) like upper('%${nombre}%') order by e.idempleado desc`;
 
     let result = await BD.open(sql,[],false);
     result.rows.map(emp=>{
@@ -177,13 +177,13 @@ router.post('/order_empleado', async (req,res)=>{
     let tipo_orden=req.body.tipo_orden;
     const listaEmpleados =[];
     if (tipo_orden=='o_nombre') {
-        sql=`select * from empleado e order by e.nombres`;
+        sql=`select e.idempleado, e.dni, e.nombres, e.telefono, e.direccion, e.salario, e.email, r.rol from empleado e, rol r where e.idrol=r.idrol order by e.nombres`;
     }
     else if (tipo_orden=='o_idempleado'){
-        sql=`select * from empleado e order by e.idempleado desc`;
+        sql=`select e.idempleado, e.dni, e.nombres, e.telefono, e.direccion, e.salario, e.email, r.rol from empleado e, rol r where e.idrol=r.idrol order by e.idempleado desc`;
     }
     else if (tipo_orden=='o_rol'){
-        sql=`select * from empleado e order by e.idrol`;
+        sql=`select e.idempleado, e.dni, e.nombres, e.telefono, e.direccion, e.salario, e.email, r.rol from empleado e, rol r where e.idrol=r.idrol order by e.idrol`;
     }
     let result = await BD.open(sql,[],false);
     result.rows.map(emp=>{
@@ -450,7 +450,7 @@ router.post('/order_cliente', async (req,res)=>{
 
 router.get('/facturas', async (req,res)=>{
     const listaFacturas =[];
-    sql=`select f.idfactura, f.numfactura, to_char(f.fecha), f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente`;
+    sql=`select f.idfactura, f.numfactura, to_char(f.fecha), f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente order by f.idfactura desc`;
 
     let result = await BD.open(sql,[],false);
     result.rows.map(f=>{
@@ -468,7 +468,8 @@ router.get('/facturas', async (req,res)=>{
     res.render('facturas',{
         
         facturas : listaFacturas,
-        usuario : req.session.usuario
+        usuario : req.session.usuario,
+        montofact : 0
     })
 })
 
@@ -505,7 +506,7 @@ router.get('/add_factura', async (req,res)=>{
 router.post('/add_factura', async (req,res)=>{
     let id=req.body.id;
     let nf=req.body.nf;
-    let ff=new Date(req.body.ff);
+    let ff=req.body.ff;
     let mf=req.body.mf;
     let ide=req.body.ide;
     let idc=req.body.idc;
@@ -513,7 +514,7 @@ router.post('/add_factura', async (req,res)=>{
     console.log(ff);
 
     
-    sql=`BEGIN insertar_factura(${nf},'01-01-2020',${mf},${ide},${idc}); COMMIT;END;`
+    sql=`BEGIN insertar_factura(${nf},'${formatofecha2(ff)}',${mf},${ide},${idc}); COMMIT;END;`
     let result = await BD.open(sql,[],false);
     
     res.redirect('/facturas');
@@ -579,18 +580,11 @@ router.get("/edit_factura/:id", async (req,res)=>{
 router.post('/edit_factura', async (req,res)=>{
     let id=req.body.id;
     let nf=req.body.nf;
-    let ff=new Date(req.body.ff);
+    let ff=req.body.ff;
     let mf=req.body.mf;
     let ide=req.body.ide;
     let idc=req.body.idc;
-    console.log(id);
-    console.log(nf);
-    console.log(ff);
-    console.log(mf);
-    console.log(ide);
-    console.log(idc);
-
-    sql=`BEGIN modifica_factura(${id},${nf},'01-02-2020',${mf},${ide},${idc}); COMMIT;END;`
+    sql=`BEGIN modifica_factura(${id},${nf},'${formatofecha2(ff)}',${mf},${ide},${idc}); COMMIT;END;`
     let result = await BD.open(sql,[],false);
     console.log(result.rows);
     res.redirect('/facturas');
@@ -604,12 +598,69 @@ router.get('/delete_factura/:id', async (req,res)=>{
     res.redirect('/facturas');
 })
 
+router.post('/search_factura', async (req,res)=>{
+    let numf=req.body.numf;
+
+    const listaFacturas =[];
+    sql=`select f.idfactura, f.numfactura, to_char(f.fecha), f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente and f.numfactura=${numf} order by f.idfactura desc`;
+
+    let result = await BD.open(sql,[],false);
+    result.rows.map(f=>{
+        let facSchema = {
+            'id': f[0],
+            'nf':f[1],
+            'ff':f[2],
+            'mf':f[3],
+            'ide':f[4],
+            'idc':f[5],
+        }
+        listaFacturas.push(facSchema)
+    });
+
+    res.render('facturas',{
+        
+        facturas : listaFacturas,
+        usuario : req.session.usuario,
+        montofact : 0
+    })
+})
+
+router.post('/order_factura', async (req,res)=>{
+    let tipo_orden=req.body.tipo_orden;
+    const listaFacturas =[];
+    if (tipo_orden=='o_fasc') {
+        sql=`select f.idfactura, f.numfactura, to_char(f.fecha), f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente order by f.fecha asc`;
+    }
+    else if (tipo_orden=='o_fdesc'){
+        sql=`select f.idfactura, f.numfactura, to_char(f.fecha), f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente order by f.fecha desc`;
+    }
+    let result = await BD.open(sql,[],false);
+    result.rows.map(f=>{
+        let facSchema = {
+            'id': f[0],
+            'nf':f[1],
+            'ff':f[2],
+            'mf':f[3],
+            'ide':f[4],
+            'idc':f[5],
+        }
+        listaFacturas.push(facSchema)
+    });
+
+    res.render('facturas',{
+        
+        facturas : listaFacturas,
+        usuario : req.session.usuario,
+        montofact : 0
+    })
+})
+
 //---------ROUTER CONTRATISTA-----------------//
 //==========================================//
 
 router.get('/contratista', async (req,res)=>{
     const listaContratistas =[];
-    sql='select * from contratista';
+    sql='select * from contratista c order by c.idcontratista desc';
 
     let result = await BD.open(sql,[],false);
     result.rows.map(c=>{
@@ -652,11 +703,9 @@ router.post('/add_contratista', async (req,res)=>{
 
 router.get("/edit_contratista/:id", async (req,res)=>{
     let id = req.params.id;
-    console.log(id);
     let listaContratistas;
     sql=`select * from contratista where idcontratista=${id}`;
     let result = await BD.open(sql,[],false);
-    console.log(result);
     result.rows.map(cont=>{
         let contSchema = {
             'id': cont[0],
@@ -682,9 +731,14 @@ router.post('/edit_contratista', async (req,res)=>{
     let telef=req.body.telef;
     let direc=req.body.direc;
     let email=req.body.email;
+    console.log(id);
+    console.log(ruc);
+    console.log(rs);
+    console.log(ce);
+    console.log(telef);
+    console.log(email);
     sql=`BEGIN modifica_contratista(${id},${ruc},'${rs}',${ce},'${telef}','${direc}','${email}'); COMMIT;END;`
     let result = await BD.open(sql,[],false);
-    console.log(result.rows);
     res.redirect('/contratista');
 })
 
@@ -695,6 +749,62 @@ router.get('/delete_contratista/:id', async (req,res)=>{
     console.log(result.rows);
     res.redirect('/contratista');
 })
+
+router.post('/search_contratista', async (req,res)=>{
+    let rs=req.body.rs;
+    const listaContratistas =[];
+    sql=`select * from contratista c where upper(c.razonsocial) like upper('%${rs}%')`;
+
+    let result = await BD.open(sql,[],false);
+    result.rows.map(c=>{
+        let contSchema = {
+            'id': c[0],
+            'ruc': c[1],
+            'rs': c[2],
+            'ce': c[3],
+            'telef': c[4],
+            'direc': c[5],
+            'email': c[6],
+        }
+        listaContratistas.push(contSchema)
+    });
+
+    res.render('contratista',{
+        
+        contratistas : listaContratistas,
+        usuario : req.session.usuario
+    })
+})
+
+router.post('/order_contratista', async (req,res)=>{
+    let tipo_orden=req.body.tipo_orden;
+    const listaContratistas =[];
+    if (tipo_orden=='o_rs') {
+        sql=`select * from contratista c order by c.razonsocial`;
+    }
+    else if (tipo_orden=='o_id'){
+        sql=`select * from contratista c order by c.idcontratista desc`;
+    }
+    let result = await BD.open(sql,[],false);
+    result.rows.map(c=>{
+        let contSchema = {
+            'id': c[0],
+            'ruc': c[1],
+            'rs': c[2],
+            'ce': c[3],
+            'telef': c[4],
+            'direc': c[5],
+            'email': c[6],
+        }
+        listaContratistas.push(contSchema)
+    });
+
+    res.render('contratista',{
+        contratistas : listaContratistas,
+        usuario : req.session.usuario
+    })
+})
+
 
 
 //---------ROUTER YACIMIENTO-----------------//
@@ -898,7 +1008,7 @@ router.get('/contrato/:nf/:id', async (req,res)=>{
     const nf = req.params.nf;
     const idf = req.params.id;
     const listaContratos =[];
-    sql=`select c.idfactura, contr.razonsocial, t.razonsocial, y.nombre, c.fecha, c.toneladas, c.estado from contrato c, contratista contr, transportista t, yacimiento y where c.idfactura=${idf} and c.idcontratista=contr.idcontratista and c.idtransportista=t.idtransportista and c.idyacimiento=y.idyacimiento`;
+    sql=`select c.idfactura, contr.razonsocial, t.razonsocial, y.nombre, to_char(c.fecha), c.toneladas, c.estado from contrato c, contratista contr, transportista t, yacimiento y where c.idfactura=${idf} and c.idcontratista=contr.idcontratista and c.idtransportista=t.idtransportista and c.idyacimiento=y.idyacimiento`;
 
     let result = await BD.open(sql,[],false);
     result.rows.map(c=>{
@@ -974,9 +1084,7 @@ router.post('/add_contrato', async (req,res)=>{
     let fe=req.body.fe;
     let ton=parseFloat(req.body.ton);
     let est=req.body.est;
-    console.log(idf);
-    
-    sql=`BEGIN insertar_contrato(${idf},${idcontr},${idt},${idy},'01-01-2021',${ton},'${est}'); COMMIT;END;`
+    sql=`BEGIN insertar_contrato(${idf},${idcontr},${idt},${idy},'${formatofecha2(fe)}',${ton},'${est}'); COMMIT;END;`
     let result = await BD.open(sql,[],false);
     console.log(result.rows);
     res.redirect('/facturas');
@@ -1028,6 +1136,180 @@ router.get('/delete_contrato/:id', async (req,res)=>{
     console.log(result.rows);
     res.redirect('/facturas');
 })
+
+/*----------------------REPORTES------------------------*/
+/*------------------------------------------------------*/
+
+router.get('/reportes',(req,res)=>{
+    res.render("reportes");
+});
+
+router.get('/reporte1',(req,res)=>{
+    const listaFacturas =[];
+    res.render("reporte1",{
+        facturas : listaFacturas,
+        montofact : 0
+    });
+});
+
+router.post('/reporte1', async (req,res)=>{
+    const listaFacturas =[];
+    let fi=req.body.fi;
+    let ff=req.body.ff;
+
+    let sumtotal=0;
+    sql3=`select f.idfactura, f.numfactura, to_char(f.fecha), f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente and fecha between '${formatofecha2(fi)}' and '${formatofecha2(ff)}' order by fecha desc`;
+    let result = await BD.open(sql3,[],false);
+    result.rows.map(f=>{
+        let facSchema = {
+            'id': f[0],
+            'nf':f[1],
+            'ff':f[2],
+            'mf':parseInt(f[3]),
+            'ide':f[4],
+            'idc':f[5],
+        }
+        sumtotal=sumtotal+facSchema.mf;
+        listaFacturas.push(facSchema)
+    });
+    console.log(sumtotal);
+    res.render("reporte1",{
+        montofact : sumtotal,
+        facturas : listaFacturas
+    });
+});
+
+function formatofecha2(fecha){
+    year=fecha.substring(0,4);
+    month=fecha.substring(5,7);
+    day=fecha.substring(8,10);
+    return day+"-"+month+"-"+year
+}
+
+router.get('/reporte2', async (req,res)=>{
+    const listaFacturas =[];
+    const listaClientes =[];
+    sql2='select c.idcliente, c.razonsocial from cliente c';
+    let result2 = await BD.open(sql2,[],false);
+    result2.rows.map(cli=>{
+        let cliSchema = {
+            'id': cli[0],
+            'rs':cli[1]
+        }
+        listaClientes.push(cliSchema)
+    });
+
+    res.render("reporte2",{
+        factura : listaFacturas,
+        montofact : 0,
+        cliente : listaClientes
+    });
+});
+
+router.post('/reporte2', async (req,res)=>{
+    const listaFacturas =[];
+    let idc=parseInt(req.body.idc);
+    let fi=req.body.fi;
+    let ff=req.body.ff;
+
+    const listaClientes =[];
+    sql2='select c.idcliente, c.razonsocial from cliente c';
+    let result2 = await BD.open(sql2,[],false);
+    result2.rows.map(cli=>{
+        let cliSchema = {
+            'id': cli[0],
+            'rs':cli[1]
+        }
+        listaClientes.push(cliSchema)
+    });
+
+    let sumtotal=0;
+    sql3=`select f.idfactura, f.numfactura, f.fecha, f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente and fecha between '${formatofecha2(fi)}' and '${formatofecha2(ff)}' and f.idcliente=${idc} order by fecha desc`;
+    let result = await BD.open(sql3,[],false);
+    result.rows.map(f=>{
+        let facSchema = {
+            'id': f[0],
+            'nf':f[1],
+            'ff':f[2],
+            'mf':parseInt(f[3]),
+            'ide':f[4],
+            'idc':f[5],
+        }
+        sumtotal=sumtotal+facSchema.mf;
+        listaFacturas.push(facSchema)
+    });
+    console.log(sumtotal);
+    res.render("reporte2",{
+        factura : listaFacturas,
+        montofact : sumtotal,
+        cliente : listaClientes
+    });
+});
+
+router.get('/reporte3', async (req,res)=>{
+    const listaFacturas =[];
+
+    const listaEmpleados =[];
+    sql='select e.idempleado, e.nombres from empleado e';
+    let result = await BD.open(sql,[],false);
+    result.rows.map(e=>{
+        let empSchema = {
+            'id': e[0],
+            'nombres':e[1]
+        }
+        listaEmpleados.push(empSchema)
+    });
+
+    res.render("reporte3",{
+        empleados : listaEmpleados,
+        facturas : listaFacturas,
+        montofact : 0
+    });
+});
+
+router.post('/reporte3', async (req,res)=>{
+    const listaFacturas =[];
+    let ide=parseInt(req.body.ide);
+    let fi=req.body.fi;
+    let ff=req.body.ff;
+
+    console.log(ide);
+    console.log(fi);
+    console.log(ff);
+
+    const listaEmpleados =[];
+    sql2='select e.idempleado, e.nombres from empleado e';
+    let result2 = await BD.open(sql2,[],false);
+    result2.rows.map(e=>{
+        let empSchema = {
+            'id': e[0],
+            'nombres':e[1]
+        }
+        listaEmpleados.push(empSchema)
+    });
+
+    let sumtotal=0;
+    sql3=`select f.idfactura, f.numfactura, f.fecha, f.monto_fact, e.nombres, c.razonsocial from factura f, empleado e, cliente c where f.idempleado=e.idempleado and f.idcliente=c.idcliente and fecha between '${formatofecha2(fi)}' and '${formatofecha2(ff)}' and f.idempleado=${ide} order by fecha desc`;
+    let result = await BD.open(sql3,[],false);
+    result.rows.map(f=>{
+        let facSchema = {
+            'id': f[0],
+            'nf':f[1],
+            'ff':f[2],
+            'mf':parseInt(f[3]),
+            'ide':f[4],
+            'idc':f[5],
+        }
+        sumtotal=sumtotal+facSchema.mf;
+        listaFacturas.push(facSchema)
+    });
+    console.log(sumtotal);
+    res.render("reporte2",{
+        factura : listaFacturas,
+        montofact : sumtotal,
+        cliente : listaEmpleados
+    });
+});
 
 /*------------------------------------------------------*/
 /*------------------------------------------------------*/

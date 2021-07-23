@@ -17,7 +17,7 @@
                 <h2>EMASA MINERALES S.A.C.</h2>
             </div>
             <div class="col-6">
-                <a href="index.html" class="btn btn-success salir">Salir</a>
+                <a href="/" class="btn btn-success salir">Salir</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
         <h1>Modificar Contratista</h1>
         <form action="/edit_contratista" method="POST">
             <label for="" class="form-label">ID Contratista</label>
-            <input class="form-control" type="text" name="id" id="" value="<%= contratista.id %>">
+            <input disabled class="form-control" type="text" name="id" id="" value="<%= contratista.id %>">
             <label class="form-label" for="">RUC</label>
             <input class="form-control" type="text" name="ruc" value="<%= contratista.ruc %>">
             <label class="form-label" for="">Razon Social</label>
@@ -43,7 +43,7 @@
                     <button type="submit" class="btn btn-success item-button"><i class="fas fa-edit"></i> Modificar Contratista</button>
                 </div>
                 <div class="col-6">
-                    <a href="contratista.html" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
+                    <a href="/contratista" class="btn btn-secondary item-button"><i class="fas fa-window-close"></i> Cancelar</a>
                 </div>
             </div>
         </form>
